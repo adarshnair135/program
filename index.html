@@ -1,0 +1,203 @@
+1)	Write a C program for encryption and decryption using Caesar cipher. 
+PROGRAM: (caesar Cipher)
+#include <stdio.h>
+#include <string.h>
+#include<conio.h>
+#include <ctype.h>
+void main()
+{
+char plain[10], cipher[10];
+int key,i,length;
+int result;
+clrscr();
+printf("\n Enter the plain text:");
+scanf("%s", plain);
+printf("\n Enter the key value:");
+scanf("%d", &key);
+printf("\n \n \t PLAIN TEXt: %s",plain);
+printf("\n \n \t ENCRYPTED TEXT: ");
+for(i = 0, length = strlen(plain); i < length; i++)
+{
+cipher[i]=plain[i] + key;
+if (isupper(plain[i]) && (cipher[i] > 'Z'))
+cipher[i] = cipher[i] - 26;
+if (islower(plain[i]) && (cipher[i] > 'z'))
+cipher[i] = cipher[i] - 26;
+printf("%c", cipher[i]);
+}
+printf("\n \n \t AFTER DECRYPTION : ");
+for(i=0;i<length;i++)
+{
+plain[i]=cipher[i]-key;
+if(isupper(cipher[i])&&(plain[i]<'A'))
+plain[i]=plain[i]+26;
+if(islower(cipher[i])&&(plain[i]<'a'))
+plain[i]=plain[i]+26;
+printf("%c",plain[i]);
+}
+getch();
+}
+OUTPUT:
+Enter the plain text: caeser
+Enter the key value: 2
+PLAIN TEXT: caeser
+ENCRYPTED TEXT: ecgugt
+ AFTER DECRYPTION: caeser
+
+
+
+2)	Write a C program for encryption and decryption using Mono-alphabetic cipher.
+Program: MONOALPHABATIC CIPHER
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#define pf printf
+#define sf scanf
+char dc[26]="XDGSZANYOBTMJCEVFHKWPLQURI";
+char ec[26]="abcdefghijklmnopqrstuvwxyz";
+void e(char*);
+void d(char*);
+void main(){
+  char *p;
+	clrscr();
+	pf("\n\nEnter plain text:");
+	sf("%s",p);
+	pf("\nAfter Encryption:\n-----------------\n");
+	e(p);
+	pf("\n%s",p);
+
+	pf("\nAfter Decryption:\n-----------------\n");
+	d(p);
+	pf("\n%s",p);
+	getch();
+}
+void e(char *p){
+	int l=0;
+	while(*(p+l) != '\0'){
+		*(p+l)=dc[*(p+l)-97];
+		l++;
+	}
+}
+void d(char *p){
+	int l=0;
+	while(*(p+l) != '\0'){
+		int i;
+		for(i=0;i<26;i++){
+			if(dc[i]==*(p+l))
+			break;
+		}
+		*(p+l)=ec[i];
+		l++;
+	}
+}
+OUTPUT:
+Enter plain text:apple
+After Encryption:
+XUUME
+After Decryption:
+Apple
+
+
+3)	Write a C program for encryption and decryption using Poly-alphabetic cipher.
+//POLYALPHABATIC CIPHER
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+void main()
+{
+    char pt[20]={'\0'},ct[20]={'\0'},key[20]={'\0'},rt[20]={'\0'};
+    int i,j;
+    clrscr();
+    printf("\n enter the plain text:");
+    scanf("%s",pt);
+    printf("\n enter the key:");
+    scanf("%s",key);
+    //length of plaintext equal to length of key
+    j=0;
+    for(i=strlen(key);i<strlen(pt);i++)
+    {
+    if(j==strlen(key))
+    {
+    j=0;
+    }
+    key[i]=key[j];
+    j++;
+    }
+    printf("\n new key is:%s",key);
+    //converting plain text to cipher text (encryption)
+    for(i=0;i<strlen(pt);i++)
+    {
+        ct[i]=(((pt[i]-97)+(key[i]-97))%26)+97;
+    }
+    printf("\n \n cipher text is:%s",ct);
+
+    //converting cipher text to plain text (decryption)
+    for(i=0;i<strlen(ct);i++)
+    {
+    if(ct[i]<key[i])
+    {
+        rt[i]=26+((ct[i]-97)-(key[i]-97))+97;
+    }
+    else
+        rt[i]=(((ct[i]-97)-(key[i]-97))%26)+97;
+    }
+    printf("\n \n plain text is:%s",rt);
+    getch();
+}
+OUTPUT:
+Enter the plain text:imdead
+ enter the key:3
+ new key is:333333
+ cipher text is:UYPQMP
+ plain text is:imdead
+
+
+4)	Write a C program to encrypt the given plain text into cipher text using Hill cipher. PROGRAM: (Hill Cipher)
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+int main(){
+unsigned int a[3][3]={{6,24,1},{13,16,10},{20,17,15}};
+unsigned int b[3][3]={{8,5,10},{21,8,21},{21,12,8}};
+int i,j, t=0;
+unsigned int c[20],d[20];
+char msg[20];
+clrscr();
+printf("Enter plain text\n ");
+scanf("%s",msg);
+for(i=0;i<strlen(msg);i++)
+{ c[i]=msg[i]-65;
+printf("%d ",c[i]);
+}
+for(i=0;i<3;i++)
+{ t=0;
+for(j=0;j<3;j++)
+{
+t=t+(a[i][j]*c[j]);
+}
+d[i]=t%26;
+}
+printf("\nEncrypted Cipher Text :");
+for(i=0;i<3;i++)
+printf(" %c",d[i]+65);
+for(i=0;i<3;i++)
+{
+t=0;
+for(j=0;j<3;j++)
+{
+t=t+(b[i][j]*d[j]);
+}
+c[i]=t%26;
+}
+printf("\nDecrypted Cipher Text :");
+for(i=0;i<3;i++)
+printf(" %c",c[i]+65);
+getch();
+return 0;
+}
+OUTPUT:
+Enter plain text
+ ANT
+0 13 19 
+Encrypted Cipher Text : T I M
+Decrypted Cipher Text : A N T
